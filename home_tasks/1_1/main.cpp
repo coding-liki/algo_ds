@@ -49,9 +49,4 @@ int main() {
     readSet(&a);
     readAndCulculateSymetricSubSet(&a);
     writeSet(&a);
-    // readSet(&b);
-    //
-    // calulateSimetricSum(&a, &b, &c);
-    //
-    // writeSet(&c);
 }
