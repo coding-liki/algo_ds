@@ -49,4 +49,6 @@ int main() {
     readSet(&a);
     readAndCulculateSymetricSubSet(&a);
     writeSet(&a);
+
+    return 0;
 }
