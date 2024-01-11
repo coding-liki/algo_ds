@@ -13,5 +13,13 @@ all: $(BINS)
 %: %.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $<
 
+
+1_1:
+	$(MAKE) -C 1_1
+1_2:
+	$(MAKE) -C 1_2
+1_3:
+	$(MAKE) -C 1_3
+
 clean:
 	rm -f $(BINS)
