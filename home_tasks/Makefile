@@ -20,9 +20,10 @@ all: $(BINS)
 	$(MAKE) -C 1_2
 1_3:
 	$(MAKE) -C 1_3
-
 1_4:
 	$(MAKE) -C 1_4
+1_5:
+	$(MAKE) -C 1_5
 
 clean:
 	rm -f $(BINS)
