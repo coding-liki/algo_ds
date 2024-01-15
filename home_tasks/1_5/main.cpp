@@ -1,72 +1,46 @@
 #include <cstdint>
 #include <iostream>
-#include <stack>
-#include <stdbool.h>
+#include <vector>
 using namespace std;
 
-template<typename T>
-struct BinaryTree {
-    T value;
-    BinaryTree<T> *left = nullptr;
-    BinaryTree<T> *right = nullptr;
-};
 
-template<typename T>
-BinaryTree<T> *binaryTreeCreate(T value) {
-    auto *root = new BinaryTree<T>;
-    root->value = value;
-    return root;
-}
-
-template<typename T>
-void binaryTreeAddLeft(BinaryTree<T> *tree, T value) {
-    tree->left = binaryTreeCreate(value);
-}
-
-template<typename T>
-void binaryTreeAddRight(BinaryTree<T> *tree, T value) {
-    tree->right = binaryTreeCreate(value);
-}
-
-
-int64_t findMinimumWeightDifference(
-    stack<int32_t> *packet,
-    BinaryTree<int64_t> *differenceTree,
-    int64_t *minimumDifference
-) {
-    if (packet->empty()) {
-        *minimumDifference = min(differenceTree->value, *minimumDifference);
-
+int64_t findMinimumDifference(vector<int32_t> *packet, size_t packetIndex, int64_t currentDifference,
+                              int64_t *minimumDifference) {
+    if (packetIndex >= packet->size()) {
+        *minimumDifference = min(abs(currentDifference), *minimumDifference);
         return *minimumDifference;
     }
 
+    findMinimumDifference(
+        packet,
+        packetIndex + 1,
+        abs(currentDifference - packet->at(packetIndex)),
+        minimumDifference
+    );
 
-    int32_t topValue = packet->top();
-    binaryTreeAddLeft(differenceTree, differenceTree->value + topValue);
-    binaryTreeAddRight(differenceTree, abs(differenceTree->value - topValue));
-    packet->pop();
-
-
-    findMinimumWeightDifference(packet, differenceTree->left, minimumDifference);
-    findMinimumWeightDifference(packet, differenceTree->right, minimumDifference);
-    packet->push(topValue);
+    findMinimumDifference(
+        packet,
+        packetIndex + 1,
+        abs(currentDifference + packet->at(packetIndex)),
+        minimumDifference
+    );
     return *minimumDifference;
 }
 
 int main() {
-    stack<int32_t> packet;
+    vector<int32_t> packet;
 
+    packet.reserve(30);
     size_t packetSize;
     cin >> packetSize;
 
     for (size_t i = 0; i < packetSize; i++) {
         int32_t weight;
         cin >> weight;
-        packet.push(weight);
+        packet.push_back(weight);
     }
-    BinaryTree<int64_t> differenceTree = {packet.top()};
-    packet.pop();
+
     int64_t minimumDifference = INT64_MAX;
-    cout << findMinimumWeightDifference(&packet, &differenceTree, &minimumDifference);
+    cout << findMinimumDifference(&packet, 1, packet[0], &minimumDifference);
     return 0;
 }
